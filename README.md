@@ -12,6 +12,8 @@ Tooltips is an extension for the Owlbear Rodeo VTT, which allows you to create t
 
 ## How to use
 
+Install from the [Owlbear rogue store](https://owlbear.rogue.pub/extension/https://owlbear-tooltips.nicholassdesai.workers.dev/manifest.json).
+
 This extension adds a new tool mode to the Text (T) tool.
 
 While using this mode, click on a token to edit its tooltip. You can configure the tooltip appearance and visibility in the tooltip edit window.
