@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Lemon Tuesday";
+    /* https: //www.dafont.com/lemon-tuesday.font */
+    src: url("./Lemon Tuesday.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Gotica";
+    /* https: //www.dafont.com/gotica-bastard.font */
+    src: url("./GoticaBastard.ttf") format("truetype");
+}
+
+p {
+    margin-block: 0;
+}
+
+#reactApp {
+    padding-left: 15px;
+    padding-right: 15px;
+}

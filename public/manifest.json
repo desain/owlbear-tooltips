@@ -1,0 +1,11 @@
+{
+    "name": "Tooltips",
+    "description": "Adds a text tool mode to manage token tooltips; click the info icon for selected tokens to see their tooltips.",
+    "version": "1.0.0",
+    "manifest_version": 1,
+    "author": "desain",
+    "icon": "/logo.png",
+    "homepage_url": "https://github.com/desain/owlbear-tooltips",
+    "background_url": "/src/background/background.html",
+    "permissions": []
+}
