@@ -25,31 +25,31 @@
         "@eslint/js": "^9.39.1",
         "@types/is-hotkey": "^0.1.10",
         "@types/node": "^22.19.1",
-        "@types/react": "^19.2.6",
+        "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^4.7.0",
         "eslint": "^9.39.1",
         "eslint-config": "github:desain/eslint-config",
         "jsdom": "^26.1.0",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.47.0",
+        "typescript-eslint": "^8.48.1",
         "vite": "^6.3.5",
         "vite-plugin-mkcert": "^1.17.8",
         "vitest": "^3.2.4",
         "wrangler": "^4.33.2"
     },
     "dependencies": {
-        "@mui/icons-material": "^7.3.5",
-        "@mui/material": "^7.3.5",
+        "@mui/icons-material": "^7.3.6",
+        "@mui/material": "^7.3.6",
         "@owlbear-rodeo/sdk": "^3.1.0",
         "immer": "^10.2.0",
         "is-hotkey": "^0.2.0",
         "owlbear-utils": "github:desain/owlbear-utils",
-        "react": "^19.2.0",
-        "react-dom": "^19.2.0",
+        "react": "^19.2.1",
+        "react-dom": "^19.2.1",
         "slate": "^0.118.1",
         "slate-history": "^0.113.1",
         "slate-react": "^0.119.0",
-        "zustand": "^5.0.8"
+        "zustand": "^5.0.9"
     }
 }
