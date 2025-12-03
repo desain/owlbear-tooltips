@@ -1,5 +1,7 @@
+import Save from "@mui/icons-material/Save";
 import {
     Box,
+    Button,
     FormControl,
     InputLabel,
     MenuItem,
@@ -7,6 +9,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import OBR from "@owlbear-rodeo/sdk";
 import { usePopoverResizer } from "owlbear-utils";
 import { useEffect, useState } from "react";
 import { version } from "../../package.json";
@@ -18,23 +21,20 @@ export function Settings() {
     const box = usePopoverResizer(ID_POPOVER_SETTINGS, 200, 600, 400, 500);
 
     const dpi = usePlayerStorage((s) => s.grid.dpi);
-    const toolEnabled = usePlayerStorage((s) => s.toolEnabled);
-    const setToolEnabled = usePlayerStorage((s) => s.setToolEnabled);
 
     const roomMetadata = usePlayerStorage((s) => s.roomMetadata);
-    // debouncing
     const [localRoomMetadata, setLocalRoomMetadata] = useState(roomMetadata);
     useEffect(() => {
         setLocalRoomMetadata(roomMetadata);
     }, [roomMetadata]);
-    useEffect(() => {
-        const applyChange = setTimeout(async () => {
-            if (localRoomMetadata !== roomMetadata) {
-                await setRoomMetadata(localRoomMetadata);
-            }
-        }, 1000);
-        return () => clearTimeout(applyChange);
-    }, [localRoomMetadata, roomMetadata]);
+    // useEffect(() => {
+    //     const applyChange = setTimeout(async () => {
+    //         if (localRoomMetadata !== roomMetadata) {
+    //             await setRoomMetadata(localRoomMetadata);
+    //         }
+    //     }, 1000);
+    //     return () => clearTimeout(applyChange);
+    // }, [localRoomMetadata, roomMetadata]);
 
     return (
         <Box sx={{ p: 2, minWidth: 300 }} ref={box}>
@@ -115,6 +115,18 @@ export function Settings() {
                     }
                 />
             </Box>
+            <Button
+                startIcon={<Save />}
+                fullWidth
+                sx={{ mt: 2 }}
+                variant="contained"
+                onClick={async () => {
+                    await setRoomMetadata(localRoomMetadata);
+                    await OBR.popover.close(ID_POPOVER_SETTINGS);
+                }}
+            >
+                Save
+            </Button>
             <Typography
                 color="textSecondary"
                 variant="subtitle1"

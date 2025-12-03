@@ -88,7 +88,6 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
                 permissions: [],
                 grid: DEFAULT_GRID,
                 tooltipItems: new Map(),
-                selectedTooltipItems: new Map(),
                 roomMetadata: {
                     anchor: "TR",
                     offset: { x: 0, y: 0 },
