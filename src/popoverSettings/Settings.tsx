@@ -1,11 +1,9 @@
 import {
     Box,
     FormControl,
-    FormControlLabel,
     InputLabel,
     MenuItem,
     Select,
-    Switch,
     TextField,
     Typography,
 } from "@mui/material";
@@ -43,7 +41,7 @@ export function Settings() {
             <Typography variant="h6" sx={{ mb: 2 }}>
                 {EXTENSION_NAME} Settings
             </Typography>
-            <FormControlLabel
+            {/* <FormControlLabel
                 control={
                     <Switch
                         checked={toolEnabled}
@@ -52,14 +50,16 @@ export function Settings() {
                 }
                 label="Enable Tool"
                 sx={{ mb: 2 }}
-            />
-            <br />
+            /> */}
             <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel id="anchor-select-label">Anchor</InputLabel>
+                <InputLabel id="anchor-select-label">
+                    Info Icon Anchor
+                </InputLabel>
                 <Select
+                    size="small"
                     labelId="anchor-select-label"
                     value={localRoomMetadata.anchor}
-                    label="Anchor"
+                    label="Info Icon Anchor"
                     onChange={(e) =>
                         setLocalRoomMetadata({
                             ...localRoomMetadata,
@@ -67,14 +67,15 @@ export function Settings() {
                         })
                     }
                 >
-                    <MenuItem value={"TL"}>Left</MenuItem>
-                    <MenuItem value={"TR"}>Right</MenuItem>
+                    <MenuItem value={"TL"}>Top Left</MenuItem>
+                    <MenuItem value={"TR"}>Top Right</MenuItem>
                     {/* <MenuItem value={"BL"}>Bottom-Left</MenuItem>
                     <MenuItem value={"BR"}>Bottom-Right</MenuItem> */}
                 </Select>
             </FormControl>
             <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
                 <TextField
+                    size="small"
                     label="Offset X"
                     type="number"
                     value={localRoomMetadata.offset.x}
@@ -94,6 +95,7 @@ export function Settings() {
                     }
                 />
                 <TextField
+                    size="small"
                     label="Offset Y"
                     type="number"
                     value={localRoomMetadata.offset.y}

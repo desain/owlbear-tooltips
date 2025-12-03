@@ -20,6 +20,8 @@ import {
 import OBR, { type Descendant, type TextStyle } from "@owlbear-rodeo/sdk";
 import { produce } from "immer";
 import {
+    assumeHexColor,
+    ColorInput,
     Control,
     getName,
     usePopoverResizer,
@@ -152,66 +154,58 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                         sx={{ mt: 2 }}
                         justifyContent="space-between"
                     >
-                        <Control label="Visibility">
-                            <ToggleButtonGroup
-                                exclusive
+                        <Control label="Font">
+                            <Select
                                 size="small"
-                                value={data.visibleTo ?? "ALL"}
-                                onChange={(_e, visibleTo) =>
+                                sx={{
+                                    minWidth: 120,
+                                }}
+                                value={data.text.style.fontFamily}
+                                onChange={(e) =>
                                     setData(
                                         produce(data, (draft) => {
-                                            if (visibleTo === "GM") {
-                                                draft.visibleTo = "GM";
-                                            } else {
-                                                delete draft.visibleTo;
-                                            }
+                                            draft.text.style.fontFamily =
+                                                e.target.value;
                                         }),
                                     )
                                 }
                             >
-                                <ToggleButton
-                                    value="ALL"
-                                    title="Visible to Everyone"
-                                >
-                                    <Visibility />
-                                </ToggleButton>
-                                <ToggleButton
-                                    value="GM"
-                                    title="Visible to GM Only"
-                                    disabled={role !== "GM"}
-                                >
-                                    <DisabledVisible />
-                                </ToggleButton>
-                            </ToggleButtonGroup>
+                                {...[...OWLBEAR_FONTS.entries()].map(
+                                    ([, [displayName, fontFamily]]) => (
+                                        <MenuItem
+                                            key={fontFamily}
+                                            value={fontFamily}
+                                        >
+                                            <Typography fontFamily={fontFamily}>
+                                                {displayName}
+                                            </Typography>
+                                        </MenuItem>
+                                    ),
+                                )}
+                            </Select>
                         </Control>
-                        <Control label="Background">
-                            <input
-                                type="color"
-                                value={data.style.backgroundColor}
-                                onChange={(e) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            draft.style.backgroundColor =
-                                                e.target.value;
-                                        }),
-                                    )
-                                }
-                            />
-                        </Control>
-                        <Control label="Text Color">
-                            <input
-                                type="color"
-                                value={data.text.style.fillColor}
-                                onChange={(e) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            draft.text.style.fillColor =
-                                                e.target.value;
-                                        }),
-                                    )
-                                }
-                            />
-                        </Control>
+                        <ColorInput
+                            title="Base"
+                            value={assumeHexColor(data.style.backgroundColor)}
+                            onChange={(color) =>
+                                setData(
+                                    produce(data, (draft) => {
+                                        draft.style.backgroundColor = color;
+                                    }),
+                                )
+                            }
+                        />
+                        <ColorInput
+                            title="Text"
+                            value={assumeHexColor(data.text.style.fillColor)}
+                            onChange={(color) =>
+                                setData(
+                                    produce(data, (draft) => {
+                                        draft.text.style.fillColor = color;
+                                    }),
+                                )
+                            }
+                        />
                         <Control label="Align Text">
                             <ToggleButtonGroup
                                 exclusive
@@ -241,37 +235,40 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                             </ToggleButtonGroup>
                         </Control>
                     </Stack>
-                    <Stack
-                        direction="row"
-                        sx={{ mt: 2 }}
-                        justifyContent="space-between"
-                    >
-                        <Control label="Font">
-                            <Select
+                    <Stack direction="row" sx={{ mt: 2 }}>
+                        <Control label="Visibility">
+                            <ToggleButtonGroup
+                                exclusive
                                 size="small"
-                                value={data.text.style.fontFamily}
-                                onChange={(e) =>
+                                value={data.visibleTo ?? "ALL"}
+                                onChange={(_e, visibleTo) =>
                                     setData(
                                         produce(data, (draft) => {
-                                            draft.text.style.fontFamily =
-                                                e.target.value;
+                                            if (visibleTo === "GM") {
+                                                draft.visibleTo = "GM";
+                                            } else {
+                                                delete draft.visibleTo;
+                                            }
                                         }),
                                     )
                                 }
                             >
-                                {...[...OWLBEAR_FONTS.entries()].map(
-                                    ([, [displayName, fontFamily]]) => (
-                                        <MenuItem
-                                            key={fontFamily}
-                                            value={fontFamily}
-                                        >
-                                            <Typography fontFamily={fontFamily}>
-                                                {displayName}
-                                            </Typography>
-                                        </MenuItem>
-                                    ),
-                                )}
-                            </Select>
+                                <ToggleButton
+                                    value="ALL"
+                                    title="Visible to Everyone"
+                                >
+                                    <Visibility sx={{ mr: 1 }} />
+                                    All players
+                                </ToggleButton>
+                                <ToggleButton
+                                    value="GM"
+                                    title="Visible to GM Only"
+                                    disabled={role !== "GM"}
+                                >
+                                    <DisabledVisible sx={{ mr: 1 }} />
+                                    GM only
+                                </ToggleButton>
+                            </ToggleButtonGroup>
                         </Control>
                     </Stack>
                     <Stack
@@ -284,6 +281,9 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                             variant="outlined"
                             color="error"
                             onClick={async () => {
+                                if (!confirm("Confirm deleting tooltip?")) {
+                                    return;
+                                }
                                 await OBR.scene.items.updateItems(
                                     [id],
                                     ([item]) => {
