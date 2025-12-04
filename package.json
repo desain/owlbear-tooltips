@@ -1,7 +1,7 @@
 {
     "name": "owlbear-tooltips",
     "type": "module",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Adds a text tool mode to manage token tooltips; click the info icon for selected tokens to see their tooltips.",
     "scripts": {
         "dev": "vite",
