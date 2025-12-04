@@ -6,6 +6,7 @@ import {
     type Item,
     type Label,
     type Layer,
+    type Vector2,
 } from "@owlbear-rodeo/sdk";
 import {
     containsImplies,
@@ -20,6 +21,10 @@ export interface TooltipData extends Pick<Label, "text" | "style"> {
      * Undefined = visible to all;
      */
     visibleTo?: "GM";
+    /**
+     * If present, overrides global offset from anchor point
+     */
+    offset?: Vector2;
 }
 
 function isTooltipData(data: unknown): data is TooltipData {

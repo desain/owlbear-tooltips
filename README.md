@@ -18,21 +18,21 @@ This extension adds a new tool mode to the Text (T) tool.
 
 While using this mode, click on a token to edit its tooltip. You can configure the tooltip appearance and visibility in the tooltip edit window.
 
-<img width="421" height="477" alt="Tooltip edit window" src="https://github.com/user-attachments/assets/7e07bfd8-45f6-4933-ba6f-7afee6bec17b" />
+![Tooltip edit window](https://github.com/user-attachments/assets/7e07bfd8-45f6-4933-ba6f-7afee6bec17b)
 
 Once an item has a tooltip, you can hover over the item using the tooltip mode to preview the tooltip contents.
 
-<img width="338" height="253" alt="Previewing a tooltip" src="https://github.com/user-attachments/assets/7d7fb8a5-5451-4477-a833-27b2a43bcbd1" />
+![Previewing a tooltip](https://github.com/user-attachments/assets/7d7fb8a5-5451-4477-a833-27b2a43bcbd1)
 
 When an item has a tooltip, shift-click on it to temporarily display the tooltip to all everyone.
 
 When you select a token that has a tooltip, an info icon will appear in the corner of the token. Click this icon to display the tooltip, and click it again to hide the tooltip.
 
-<img width="394" height="325" alt="Using the info icon" src="https://github.com/user-attachments/assets/86900319-bf39-4d40-8965-c62e7296a5bd" />
+![Using the info icon](https://github.com/user-attachments/assets/86900319-bf39-4d40-8965-c62e7296a5bd)
 
 If you're the GM, you can customize where the tooltip icon appears using the Tooltip Settings menu, so the icon doesn't overlap UI elements created by other extensions.
 
-<img width="433" height="376" alt="GM Settings" src="https://github.com/user-attachments/assets/699df4b3-5292-49e2-957a-48ea9cdf7ec1" />
+![GM Settings](https://github.com/user-attachments/assets/699df4b3-5292-49e2-957a-48ea9cdf7ec1)
 
 ## Support
 
@@ -66,9 +66,11 @@ To make a production build run:
 
 ## To do
 
+-   Per-token icon offsets
+    -   Configure per-token icon offsets by dragging icon in tooltip mode
+-   Edit icon for expanded tooltip?
 -   Setting to delay before showing?
 -   Set text outline color and width
--   React color picker
 -   Icon size config?
 
 ## License

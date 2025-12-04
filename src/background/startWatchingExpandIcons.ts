@@ -8,7 +8,14 @@ import OBR, {
     type Item,
     type Label,
 } from "@owlbear-rodeo/sdk";
-import { diffSets, getBounds, Patcher, waitFor } from "owlbear-utils";
+import {
+    diffSets,
+    getBounds,
+    Patcher,
+    verifyAttached,
+    waitFor,
+    type AttachedItem,
+} from "owlbear-utils";
 import { METADATA_KEY_TOOLTIPS } from "../constants";
 import {
     tooltipVisible,
@@ -21,7 +28,7 @@ import { makeTooltipLabel } from "../tool/TooltipLabel";
 import infoActive from "../../assets/info-active.svg";
 import info from "../../assets/info.svg";
 
-type InfoIcon = Image & { attachedTo: NonNullable<Image["attachedTo"]> };
+type InfoIcon = AttachedItem<Image>;
 
 const POISON_CHECK_TIME_MS = 100;
 
@@ -43,22 +50,25 @@ export function buildSvgIcon(url: string, size = 512) {
 function makeIcon(item: TooltipItem): InfoIcon {
     const roomMetadata = usePlayerStorage.getState().roomMetadata;
     const { min, max } = getBounds(item, usePlayerStorage.getState().grid);
-    const position = Math2.add(roomMetadata.offset, {
+    const offset =
+        item.metadata[METADATA_KEY_TOOLTIPS]?.offset ?? roomMetadata.offset;
+    const position = Math2.add(offset, {
         x: roomMetadata.anchor.endsWith("L") ? min.x : max.x,
         y: roomMetadata.anchor.startsWith("T") ? min.y : max.y,
     });
-    return buildSvgIcon(info)
+    const icon = buildSvgIcon(info)
         .disableHit(false)
         .layer("CONTROL")
         .position(position)
         .attachedTo(item.id)
         .scale({ x: 0.3, y: 0.3 })
-        .disableAttachmentBehavior(["COPY", "LOCKED", "SCALE"])
-        .build() as InfoIcon;
+        .disableAttachmentBehavior(["COPY", "LOCKED", "SCALE", "ROTATION"])
+        .build();
+    return verifyAttached(icon);
 }
 
 interface IconData {
-    item: Image & { attachedTo: string };
+    item: Image & { attachedTo: NonNullable<Item["attachedTo"]> };
     /**
      * When an icon's token is deselected, it is poisoned and starts dying.
      * If the icon is selected quickly after (since the reason for the

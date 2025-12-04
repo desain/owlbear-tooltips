@@ -1,9 +1,11 @@
+import Help from "@mui/icons-material/HelpOutline";
 import Save from "@mui/icons-material/Save";
 import {
     Box,
     Button,
     FormControl,
     InputLabel,
+    Link,
     MenuItem,
     Select,
     TextField,
@@ -16,6 +18,34 @@ import { version } from "../../package.json";
 import { EXTENSION_NAME, ID_POPOVER_SETTINGS } from "../constants";
 import { setRoomMetadata } from "../state/RoomMetadata";
 import { usePlayerStorage } from "../state/usePlayerStorage";
+
+interface SettingsTitleProps {
+    title: string;
+    helpUrl: string;
+}
+
+const SettingsTitle = ({ title, helpUrl }: SettingsTitleProps) => (
+    <Typography
+        variant="h6"
+        sx={{ mb: 2, display: "flex", alignItems: "center" }}
+    >
+        {title}
+        <Link
+            href={helpUrl}
+            title="Extension guide"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+                marginLeft: "8px",
+                display: "flex",
+                alignItems: "center",
+                color: "inherit",
+            }}
+        >
+            <Help fontSize="small" />
+        </Link>
+    </Typography>
+);
 
 export function Settings() {
     const box = usePopoverResizer(ID_POPOVER_SETTINGS, 200, 600, 400, 500);
@@ -38,9 +68,10 @@ export function Settings() {
 
     return (
         <Box sx={{ p: 2, minWidth: 300 }} ref={box}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-                {EXTENSION_NAME} Settings
-            </Typography>
+            <SettingsTitle
+                title={EXTENSION_NAME + " Settings"}
+                helpUrl="https://github.com/desain/owlbear-tooltips"
+            />
             {/* <FormControlLabel
                 control={
                     <Switch

@@ -242,6 +242,10 @@ export class TooltipMode implements ToolMode {
         }
     };
 
+    // Don't allow double-click to select
+    // eslint-disable-next-line class-methods-use-this
+    onToolDoubleClick = () => false;
+
     onToolMove = (_context: ToolContext, event: ToolEvent) => {
         if (event.target?.id !== this.#target?.id) {
             // hover target changed
