@@ -68,6 +68,7 @@ To make a production build run:
 
 -   Per-token icon offsets
     -   Configure per-token icon offsets by dragging icon in tooltip mode
+-   "Owner or GM" visibility
 -   Edit icon for expanded tooltip?
 -   Setting to delay before showing?
 -   Set text outline color and width

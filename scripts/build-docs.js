@@ -16,6 +16,9 @@ function syncMetadata() {
     const packageJsonPath = resolve(rootDir, "package.json");
     const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
     const { description, author } = packageJson;
+    if (description.length >= 128) {
+        throw Error("description.length >= 128");
+    }
 
     // Update manifest.json
     const manifestPath = resolve(rootDir, "public", "manifest.json");

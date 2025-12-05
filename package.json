@@ -2,7 +2,7 @@
     "name": "owlbear-tooltips",
     "type": "module",
     "version": "1.0.3",
-    "description": "Add custom notes to tokens with a new text tool mode. When selected, tokens with tooltip notes will show an info icon; click it to see the tooltip.",
+    "description": "Add notes to tokens with a new text tool mode. Selected tokens with notes show an info icon; click it to see the tooltip.",
     "scripts": {
         "dev": "vite",
         "build": "pnpm docs:build && tsc --build && vite build",

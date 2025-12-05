@@ -1,6 +1,6 @@
 ---
 title: Tooltips
-description: Add custom notes to tokens with a new text tool mode. When selected, tokens with tooltip notes will show an info icon; click it to see the tooltip.
+description: Add notes to tokens with a new text tool mode. Selected tokens with notes show an info icon; click it to see the tooltip.
 author: desain
 image: https://owlbear-tooltips.nicholassdesai.workers.dev/hero.png
 icon: https://owlbear-tooltips.nicholassdesai.workers.dev/logo.png
