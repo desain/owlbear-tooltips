@@ -5,7 +5,10 @@ import {
     FormatAlignLeft,
     FormatAlignRight,
     Save,
+    SettingsOverscan,
     Visibility,
+    WidthNormalOutlined,
+    WidthWideOutlined,
 } from "@mui/icons-material";
 import {
     Button,
@@ -235,7 +238,11 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                             </ToggleButtonGroup>
                         </Control>
                     </Stack>
-                    <Stack direction="row" sx={{ mt: 2 }}>
+                    <Stack
+                        direction="row"
+                        sx={{ mt: 2 }}
+                        justifyContent="space-between"
+                    >
                         <Control label="Visibility">
                             <ToggleButtonGroup
                                 exclusive
@@ -258,7 +265,7 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                                     title="Visible to Everyone"
                                 >
                                     <Visibility sx={{ mr: 1 }} />
-                                    All players
+                                    All
                                 </ToggleButton>
                                 <ToggleButton
                                     value="GM"
@@ -266,7 +273,37 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                                     disabled={role !== "GM"}
                                 >
                                     <DisabledVisible sx={{ mr: 1 }} />
-                                    GM only
+                                    GM
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Control>
+                        <Control label="Width">
+                            <ToggleButtonGroup
+                                exclusive
+                                size="small"
+                                value={data.text.width}
+                                onChange={(
+                                    _e,
+                                    width: TooltipData["text"]["width"] | null,
+                                ) =>
+                                    setData(
+                                        produce(data, (draft) => {
+                                            if (width) {
+                                                draft.text.width = width;
+                                            }
+                                        }),
+                                    )
+                                }
+                            >
+                                <ToggleButton title="Fit to text" value="AUTO">
+                                    {/* <WidthFullOutlined /> */}
+                                    <SettingsOverscan />
+                                </ToggleButton>
+                                <ToggleButton title="Wide" value={1000}>
+                                    <WidthWideOutlined />
+                                </ToggleButton>
+                                <ToggleButton title="Narrow" value={300}>
+                                    <WidthNormalOutlined />
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </Control>
