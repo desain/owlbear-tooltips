@@ -25,23 +25,31 @@ import {
     METADATA_KEY_TOOLTIPS,
 } from "../constants";
 import { isRoomMetadata, type RoomMetadata } from "./RoomMetadata";
-import { isTooltipItem, type TooltipItem } from "./TooltipItem";
+import {
+    isTooltipItem,
+    type TooltipData,
+    type TooltipItem,
+} from "./TooltipItem";
 
 enableMapSet();
 
 interface LocalStorage {
     readonly toolEnabled: boolean;
     readonly hoverDelay: number;
+    readonly defaultTooltip: TooltipData;
     readonly setToolEnabled: (this: void, toolEnabled: boolean) => void;
     readonly setHoverDelay: (this: void, hoverDelay: number) => void;
+    readonly setDefaultTooltip: (this: void, tooltip: TooltipData) => void;
 }
 function partializeLocalStorage({
     toolEnabled,
     hoverDelay,
+    defaultTooltip,
 }: LocalStorage): ExtractNonFunctions<LocalStorage> {
     return {
         toolEnabled,
         hoverDelay,
+        defaultTooltip,
     };
 }
 
@@ -80,8 +88,49 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
                 // local storage
                 toolEnabled: true,
                 hoverDelay: 0,
+                defaultTooltip: {
+                    text: {
+                        height: "AUTO",
+                        width: "AUTO",
+                        plainText: "",
+                        type: "RICH",
+                        richText: [
+                            {
+                                type: "paragraph",
+                                children: [
+                                    {
+                                        text: "",
+                                    },
+                                ],
+                            },
+                        ],
+                        style: {
+                            padding: 8,
+                            fontFamily: "Roboto",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            textAlign: "CENTER",
+                            textAlignVertical: "MIDDLE",
+                            fillColor: "black",
+                            fillOpacity: 1,
+                            strokeColor: "black",
+                            strokeOpacity: 1,
+                            strokeWidth: 0,
+                            lineHeight: 1.5,
+                        },
+                    },
+                    style: {
+                        backgroundColor: "#ccced8ff",
+                        backgroundOpacity: 1,
+                        cornerRadius: 8,
+                        pointerDirection: "DOWN",
+                        pointerWidth: 8,
+                        pointerHeight: 12,
+                    },
+                },
                 setToolEnabled: (toolEnabled) => set({ toolEnabled }),
                 setHoverDelay: (hoverDelay) => set({ hoverDelay }),
+                setDefaultTooltip: (defaultTooltip) => set({ defaultTooltip }),
                 // owlbear store
                 sceneReady: false,
                 theme: DEFAULT_THEME,

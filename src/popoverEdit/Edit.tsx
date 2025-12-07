@@ -1,6 +1,6 @@
 import { DeleteForever, Save } from "@mui/icons-material";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
-import OBR, { type Descendant, type TextStyle } from "@owlbear-rodeo/sdk";
+import OBR, { type TextStyle } from "@owlbear-rodeo/sdk";
 import { produce } from "immer";
 import { getName, usePopoverResizer, useRehydrate } from "owlbear-utils";
 import type React from "react";
@@ -15,47 +15,6 @@ import {
 import { usePlayerStorage } from "../state/usePlayerStorage";
 import { RichTextEditor } from "./RichTextEditor";
 import { StyleEditor } from "./StyleEditor";
-
-const DEFAULT_TOOLTIP: TooltipData = {
-    text: {
-        height: "AUTO",
-        width: "AUTO",
-        plainText: "",
-        type: "RICH",
-        richText: [
-            {
-                type: "paragraph",
-                children: [
-                    {
-                        text: "",
-                    },
-                ],
-            },
-        ],
-        style: {
-            padding: 8,
-            fontFamily: "Roboto",
-            fontSize: 16,
-            fontWeight: 400,
-            textAlign: "CENTER",
-            textAlignVertical: "MIDDLE",
-            fillColor: "black",
-            fillOpacity: 1,
-            strokeColor: "black",
-            strokeOpacity: 1,
-            strokeWidth: 0,
-            lineHeight: 1.5,
-        },
-    },
-    style: {
-        backgroundColor: "#ccced8ff",
-        backgroundOpacity: 1,
-        cornerRadius: 8,
-        pointerDirection: "DOWN",
-        pointerWidth: 8,
-        pointerHeight: 12,
-    },
-};
 
 interface EditProps {
     id: TooltipItem["id"];
@@ -84,8 +43,11 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                 if (item && isTooltipItem(item)) {
                     setItemName(getName(item));
                     setData(
-                        item.metadata[METADATA_KEY_TOOLTIPS] ?? DEFAULT_TOOLTIP,
+                        item.metadata[METADATA_KEY_TOOLTIPS] ??
+                            usePlayerStorage.getState().defaultTooltip,
                     );
+                } else {
+                    throw Error("Failed to load tooltip item");
                 }
             });
         }
@@ -106,7 +68,7 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                         onChange={(value) => {
                             setData(
                                 produce(data, (draft) => {
-                                    draft.text.richText = value as Descendant[];
+                                    draft.text.richText = value;
                                 }),
                             );
                         }}
