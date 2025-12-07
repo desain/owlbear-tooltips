@@ -1,4 +1,3 @@
-import OBR from "@owlbear-rodeo/sdk";
 import { ExtensionWrapper } from "owlbear-utils";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -6,9 +5,7 @@ import { startSyncing } from "../state/startSyncing";
 import { usePlayerStorage } from "../state/usePlayerStorage";
 import { Settings } from "./Settings";
 
-OBR.onReady(() => {
-    void startSyncing();
-});
+import "../../assets/style.css";
 
 document.addEventListener("DOMContentLoaded", () => {
     const root = ReactDOM.createRoot(document.getElementById("reactApp")!);

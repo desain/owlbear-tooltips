@@ -3,20 +3,23 @@ import Save from "@mui/icons-material/Save";
 import {
     Box,
     Button,
+    Divider,
     FormControl,
     InputLabel,
     Link,
     MenuItem,
     Select,
+    Stack,
     TextField,
     Typography,
 } from "@mui/material";
 import OBR from "@owlbear-rodeo/sdk";
 import { usePopoverResizer } from "owlbear-utils";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { version } from "../../package.json";
 import { EXTENSION_NAME, ID_POPOVER_SETTINGS } from "../constants";
-import { setRoomMetadata } from "../state/RoomMetadata";
+import { StyleEditor } from "../popoverEdit/StyleEditor";
+import { setRoomMetadata, type RoomMetadata } from "../state/RoomMetadata";
 import { usePlayerStorage } from "../state/usePlayerStorage";
 
 interface SettingsTitleProps {
@@ -47,41 +50,19 @@ const SettingsTitle = ({ title, helpUrl }: SettingsTitleProps) => (
     </Typography>
 );
 
-export function Settings() {
-    const box = usePopoverResizer(ID_POPOVER_SETTINGS, 200, 600, 400, 500);
+interface GmSettingsProps {
+    localRoomMetadata: RoomMetadata;
+    setLocalRoomMetadata: (localRoomMetadata: RoomMetadata) => void;
+}
 
+const GmSettings: React.FC<GmSettingsProps> = ({
+    localRoomMetadata,
+    setLocalRoomMetadata,
+}) => {
     const dpi = usePlayerStorage((s) => s.grid.dpi);
-
-    const roomMetadata = usePlayerStorage((s) => s.roomMetadata);
-    const [localRoomMetadata, setLocalRoomMetadata] = useState(roomMetadata);
-    useEffect(() => {
-        setLocalRoomMetadata(roomMetadata);
-    }, [roomMetadata]);
-    // useEffect(() => {
-    //     const applyChange = setTimeout(async () => {
-    //         if (localRoomMetadata !== roomMetadata) {
-    //             await setRoomMetadata(localRoomMetadata);
-    //         }
-    //     }, 1000);
-    //     return () => clearTimeout(applyChange);
-    // }, [localRoomMetadata, roomMetadata]);
-
     return (
-        <Box sx={{ p: 2, minWidth: 300 }} ref={box}>
-            <SettingsTitle
-                title={EXTENSION_NAME + " Settings"}
-                helpUrl="https://github.com/desain/owlbear-tooltips"
-            />
-            {/* <FormControlLabel
-                control={
-                    <Switch
-                        checked={toolEnabled}
-                        onChange={(e) => setToolEnabled(e.target.checked)}
-                    />
-                }
-                label="Enable Tool"
-                sx={{ mb: 2 }}
-            /> */}
+        <>
+            <Typography variant="caption">GM-only settings</Typography>
             <FormControl fullWidth sx={{ mt: 2 }}>
                 <InputLabel id="anchor-select-label">
                     Info Icon Anchor
@@ -98,13 +79,13 @@ export function Settings() {
                         })
                     }
                 >
-                    <MenuItem value={"TL"}>Top Left</MenuItem>
-                    <MenuItem value={"TR"}>Top Right</MenuItem>
-                    {/* <MenuItem value={"BL"}>Bottom-Left</MenuItem>
-                    <MenuItem value={"BR"}>Bottom-Right</MenuItem> */}
+                    <MenuItem value="TL">Top Left</MenuItem>
+                    <MenuItem value="TR">Top Right</MenuItem>
+                    {/* <MenuItem value="BL">Bottom-Left</MenuItem>
+                    <MenuItem value="BR">Bottom-Right</MenuItem> */}
                 </Select>
             </FormControl>
-            <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <Stack direction="row" sx={{ gap: 2, mt: 2 }}>
                 <TextField
                     size="small"
                     label="Offset X"
@@ -145,14 +126,73 @@ export function Settings() {
                         })
                     }
                 />
-            </Box>
+            </Stack>
+        </>
+    );
+};
+
+export const Settings: React.FC = () => {
+    const box = usePopoverResizer(ID_POPOVER_SETTINGS, 200, 600, 400, 500);
+    const role = usePlayerStorage((s) => s.role);
+    const defaultTooltip = usePlayerStorage((s) => s.defaultTooltip);
+    const setDefaultTooltip = usePlayerStorage((s) => s.setDefaultTooltip);
+    const [localDefaultTooltip, setLocalDefaultTooltip] =
+        useState(defaultTooltip);
+
+    const roomMetadata = usePlayerStorage((s) => s.roomMetadata);
+    const [localRoomMetadata, setLocalRoomMetadata] = useState(roomMetadata);
+    useEffect(() => {
+        setLocalRoomMetadata(roomMetadata);
+    }, [roomMetadata]);
+    // useEffect(() => {
+    //     const applyChange = setTimeout(async () => {
+    //         if (localRoomMetadata !== roomMetadata) {
+    //             await setRoomMetadata(localRoomMetadata);
+    //         }
+    //     }, 1000);
+    //     return () => clearTimeout(applyChange);
+    // }, [localRoomMetadata, roomMetadata]);
+
+    return (
+        <Box sx={{ p: 2, minWidth: 300 }} ref={box}>
+            <SettingsTitle
+                title={EXTENSION_NAME + " Settings"}
+                helpUrl="https://github.com/desain/owlbear-tooltips"
+            />
+            {/* <FormControlLabel
+                control={
+                    <Switch
+                        checked={toolEnabled}
+                        onChange={(e) => setToolEnabled(e.target.checked)}
+                    />
+                }
+                label="Enable Tool"
+                sx={{ mb: 2 }}
+            /> */}
+            <Typography variant="caption">New Tooltip Defaults</Typography>
+            <StyleEditor
+                value={localDefaultTooltip}
+                onChange={setLocalDefaultTooltip}
+            />
+            {role === "GM" && (
+                <>
+                    <Divider sx={{ mt: 1, mb: 1 }} />
+                    <GmSettings
+                        localRoomMetadata={localRoomMetadata}
+                        setLocalRoomMetadata={setLocalRoomMetadata}
+                    />
+                </>
+            )}
             <Button
                 startIcon={<Save />}
                 fullWidth
                 sx={{ mt: 2 }}
                 variant="contained"
                 onClick={async () => {
-                    await setRoomMetadata(localRoomMetadata);
+                    setDefaultTooltip(localDefaultTooltip);
+                    if (role === "GM") {
+                        await setRoomMetadata(localRoomMetadata);
+                    }
                     await OBR.popover.close(ID_POPOVER_SETTINGS);
                 }}
             >
@@ -167,4 +207,4 @@ export function Settings() {
             </Typography>
         </Box>
     );
-}
+};

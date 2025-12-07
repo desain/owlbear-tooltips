@@ -77,7 +77,11 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                         backgroundColor={data.style.backgroundColor}
                         fontFamily={data.text.style.fontFamily}
                     />
-                    <StyleEditor value={data} onChange={setData} />
+                    <StyleEditor
+                        value={data}
+                        onChange={setData}
+                        sx={{ mt: 2 }}
+                    />
                     <Stack
                         direction="row"
                         sx={{ mt: 2 }}

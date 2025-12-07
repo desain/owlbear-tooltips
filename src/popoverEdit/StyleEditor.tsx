@@ -24,6 +24,8 @@ import type { TooltipData } from "../state/TooltipItem";
 import { usePlayerStorage } from "../state/usePlayerStorage";
 import GmIcon from "./GmIcon";
 
+import "../../assets/style.css";
+
 const OWLBEAR_FONTS = [
     ["Rounded", "Roboto"],
     ["Fantasy", "Gotica"],
@@ -37,22 +39,20 @@ const OWLBEAR_FONTS = [
 interface StyleEditorProps {
     value: TooltipData;
     onChange: (value: TooltipData) => void;
+    sx?: Parameters<typeof Stack>[0]["sx"];
 }
 
 export const StyleEditor: React.FC<StyleEditorProps> = ({
     value,
     onChange,
+    sx,
 }) => {
     const playerId = usePlayerStorage((s) => s.playerId);
     const role = usePlayerStorage((s) => s.role);
 
     return (
         <>
-            <Stack
-                direction="row"
-                sx={{ mt: 2 }}
-                justifyContent="space-between"
-            >
+            <Stack direction="row" justifyContent="space-between" sx={sx}>
                 <Control label="Font">
                     <Select
                         size="small"

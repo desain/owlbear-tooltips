@@ -32,7 +32,6 @@ async function installTool() {
                     icon: arrowCursorSettings,
                     label: "Tooltip Settings",
                     filter: {
-                        roles: ["GM"],
                         activeTools: ["rodeo.owlbear.tool/text"],
                     },
                 },

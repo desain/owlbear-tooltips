@@ -6,8 +6,6 @@ import { startSyncing } from "../state/startSyncing";
 import { usePlayerStorage } from "../state/usePlayerStorage";
 import { Edit } from "./Edit";
 
-import "../../assets/style.css";
-
 document.addEventListener("DOMContentLoaded", () => {
     const root = ReactDOM.createRoot(document.getElementById("reactApp")!);
     const urlParams = new URLSearchParams(window.location.search);
