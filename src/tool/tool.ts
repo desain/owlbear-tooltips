@@ -4,17 +4,19 @@ import { usePlayerStorage } from "../state/usePlayerStorage";
 import { TooltipMode } from "./TooltipMode";
 
 import arrowCursorSettings from "../../assets/arrow-cursor-settings.svg";
+import type { ModeShortcut } from "../popoverSettings/ModeShortcutSelector";
 import { openSettings } from "../popoverSettings/openSettings";
 
 export async function startWatchingToolEnabled(): Promise<VoidFunction> {
-    if (usePlayerStorage.getState().toolEnabled) {
-        await installTool();
+    const shortcut = usePlayerStorage.getState().modeShortcut;
+    if (shortcut) {
+        await installTool(shortcut);
     }
     return usePlayerStorage.subscribe(
-        (store) => store.toolEnabled,
-        async (enabled) => {
-            if (enabled) {
-                await installTool();
+        (store) => store.modeShortcut,
+        async (shortcut) => {
+            if (shortcut) {
+                await installTool(shortcut);
             } else {
                 await uninstallTool();
             }
@@ -22,9 +24,9 @@ export async function startWatchingToolEnabled(): Promise<VoidFunction> {
     );
 }
 
-async function installTool() {
+async function installTool(modeShortcut: ModeShortcut) {
     await Promise.all([
-        OBR.tool.createMode(new TooltipMode()),
+        OBR.tool.createMode(new TooltipMode(modeShortcut)),
         OBR.tool.createAction({
             id: ID_ACTION_SETTINGS,
             icons: [

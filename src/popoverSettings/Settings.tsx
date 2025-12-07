@@ -21,6 +21,7 @@ import { EXTENSION_NAME, ID_POPOVER_SETTINGS } from "../constants";
 import { StyleEditor } from "../popoverEdit/StyleEditor";
 import { setRoomMetadata, type RoomMetadata } from "../state/RoomMetadata";
 import { usePlayerStorage } from "../state/usePlayerStorage";
+import { ModeShortcutSelector } from "./ModeShortcutSelector";
 
 interface SettingsTitleProps {
     title: string;
@@ -134,6 +135,9 @@ const GmSettings: React.FC<GmSettingsProps> = ({
 export const Settings: React.FC = () => {
     const box = usePopoverResizer(ID_POPOVER_SETTINGS, 200, 600, 400, 500);
     const role = usePlayerStorage((s) => s.role);
+    const modeShortcut = usePlayerStorage((s) => s.modeShortcut);
+    const setModeShortcut = usePlayerStorage((s) => s.setModeShortcut);
+    const [localModeShortcut, setLocalModeShortcut] = useState(modeShortcut);
     const defaultTooltip = usePlayerStorage((s) => s.defaultTooltip);
     const setDefaultTooltip = usePlayerStorage((s) => s.setDefaultTooltip);
     const [localDefaultTooltip, setLocalDefaultTooltip] =
@@ -169,6 +173,11 @@ export const Settings: React.FC = () => {
                 label="Enable Tool"
                 sx={{ mb: 2 }}
             /> */}
+            <ModeShortcutSelector
+                value={localModeShortcut}
+                onChange={setLocalModeShortcut}
+            />
+            <Divider sx={{ mt: 1, mb: 1 }} />
             <Typography variant="caption">New Tooltip Defaults</Typography>
             <StyleEditor
                 value={localDefaultTooltip}
@@ -190,6 +199,7 @@ export const Settings: React.FC = () => {
                 variant="contained"
                 onClick={async () => {
                     setDefaultTooltip(localDefaultTooltip);
+                    setModeShortcut(localModeShortcut);
                     if (role === "GM") {
                         await setRoomMetadata(localRoomMetadata);
                     }

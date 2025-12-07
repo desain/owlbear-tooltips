@@ -24,6 +24,7 @@ import {
     METADATA_KEY_ROOM,
     METADATA_KEY_TOOLTIPS,
 } from "../constants";
+import type { ModeShortcut } from "../popoverSettings/ModeShortcutSelector";
 import { isRoomMetadata, type RoomMetadata } from "./RoomMetadata";
 import {
     isTooltipItem,
@@ -34,20 +35,20 @@ import {
 enableMapSet();
 
 interface LocalStorage {
-    readonly toolEnabled: boolean;
+    readonly modeShortcut: ModeShortcut | undefined;
     readonly hoverDelay: number;
     readonly defaultTooltip: TooltipData;
-    readonly setToolEnabled: (this: void, toolEnabled: boolean) => void;
+    readonly setModeShortcut: (this: void, modeShortcut?: ModeShortcut) => void;
     readonly setHoverDelay: (this: void, hoverDelay: number) => void;
     readonly setDefaultTooltip: (this: void, tooltip: TooltipData) => void;
 }
 function partializeLocalStorage({
-    toolEnabled,
+    modeShortcut,
     hoverDelay,
     defaultTooltip,
 }: LocalStorage): ExtractNonFunctions<LocalStorage> {
     return {
-        toolEnabled,
+        modeShortcut,
         hoverDelay,
         defaultTooltip,
     };
@@ -86,7 +87,7 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
         persist(
             immer((set) => ({
                 // local storage
-                toolEnabled: true,
+                modeShortcut: "O",
                 hoverDelay: 0,
                 defaultTooltip: {
                     text: {
@@ -128,7 +129,7 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
                         pointerHeight: 12,
                     },
                 },
-                setToolEnabled: (toolEnabled) => set({ toolEnabled }),
+                setModeShortcut: (modeShortcut) => set({ modeShortcut }),
                 setHoverDelay: (hoverDelay) => set({ hoverDelay }),
                 setDefaultTooltip: (defaultTooltip) => set({ defaultTooltip }),
                 // owlbear store

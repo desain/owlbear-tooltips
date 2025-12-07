@@ -2,7 +2,6 @@ import type { Vector2 } from "@owlbear-rodeo/sdk";
 import OBR from "@owlbear-rodeo/sdk";
 import { isObject, isVector2 } from "owlbear-utils";
 import { METADATA_KEY_ROOM } from "../constants";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 
 type InfoIconAnchorHorizontal = "L" | "R";
 type InfoIconAnchorVertical = "T" | "B";

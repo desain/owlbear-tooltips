@@ -13,6 +13,7 @@ import arrowCursor from "../../assets/arrow-cursor.svg";
 import { broadcastShowTooltip } from "../broadcast/broadcast";
 import { ID_MODE_TOOLTIP, METADATA_KEY_TOOLTIPS } from "../constants";
 import { openEdit } from "../popoverEdit/openEdit";
+import type { ModeShortcut } from "../popoverSettings/ModeShortcutSelector";
 import {
     isTooltipItem,
     tooltipVisible,
@@ -140,9 +141,8 @@ function canEditTooltips() {
 }
 
 export class TooltipMode implements ToolMode {
-    id = ID_MODE_TOOLTIP;
-    shortcut = "O";
-    icons: ToolIcon[] = [
+    readonly id = ID_MODE_TOOLTIP;
+    readonly icons: ToolIcon[] = [
         {
             icon: arrowCursor,
             label: "View and Manage Tooltips",
@@ -151,7 +151,7 @@ export class TooltipMode implements ToolMode {
             },
         },
     ];
-    cursors: ToolCursor[] = [
+    readonly cursors: ToolCursor[] = [
         {
             cursor: "context-menu",
             filter: {
@@ -204,7 +204,7 @@ export class TooltipMode implements ToolMode {
             },
         },
     ];
-    preventDrag: ToolModeFilter = {
+    readonly preventDrag: ToolModeFilter = {
         target: [
             {
                 key: "layer",
@@ -213,9 +213,14 @@ export class TooltipMode implements ToolMode {
             },
         ],
     };
+    readonly shortcut: ModeShortcut | undefined;
 
     #target?: TooltipItem;
     #tooltipLabel?: Label["id"];
+
+    constructor(shortcut: ModeShortcut) {
+        this.shortcut = shortcut;
+    }
 
     #removePreview() {
         this.#target = undefined;
