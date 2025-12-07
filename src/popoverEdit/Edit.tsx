@@ -1,39 +1,8 @@
-import {
-    DeleteForever,
-    DisabledVisible,
-    FormatAlignCenter,
-    FormatAlignLeft,
-    FormatAlignRight,
-    Save,
-    SettingsOverscan,
-    Visibility,
-    WidthNormalOutlined,
-    WidthWideOutlined,
-} from "@mui/icons-material";
-import {
-    Button,
-    MenuItem,
-    Select,
-    Skeleton,
-    Stack,
-    ToggleButton,
-    ToggleButtonGroup,
-    Typography,
-} from "@mui/material";
-import OBR, {
-    type Descendant,
-    type Player,
-    type TextStyle,
-} from "@owlbear-rodeo/sdk";
+import { DeleteForever, Save } from "@mui/icons-material";
+import { Button, Skeleton, Stack, Typography } from "@mui/material";
+import OBR, { type Descendant, type TextStyle } from "@owlbear-rodeo/sdk";
 import { produce } from "immer";
-import {
-    assumeHexColor,
-    ColorInput,
-    Control,
-    getName,
-    usePopoverResizer,
-    useRehydrate,
-} from "owlbear-utils";
+import { getName, usePopoverResizer, useRehydrate } from "owlbear-utils";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { ID_POPOVER_EDIT, METADATA_KEY_TOOLTIPS } from "../constants";
@@ -44,8 +13,8 @@ import {
     type TooltipItem,
 } from "../state/TooltipItem";
 import { usePlayerStorage } from "../state/usePlayerStorage";
-import GmIcon from "./GmIcon";
 import { RichTextEditor } from "./RichTextEditor";
+import { StyleEditor } from "./StyleEditor";
 
 const DEFAULT_TOOLTIP: TooltipData = {
     text: {
@@ -88,16 +57,6 @@ const DEFAULT_TOOLTIP: TooltipData = {
     },
 };
 
-const OWLBEAR_FONTS = [
-    ["Rounded", "Roboto"],
-    ["Fantasy", "Gotica"],
-    ["Marker", "Permanent Marker"],
-    ["Script", "Lemon Tuesday"],
-    ["Cursive", "Dancing Script"],
-    ["Mono", "Courier Prime"],
-    ["Serif", "EB Garamond"],
-] as const;
-
 interface EditProps {
     id: TooltipItem["id"];
 }
@@ -110,11 +69,9 @@ function lowercaseAlign(
 
 export const Edit: React.FC<EditProps> = ({ id }) => {
     useRehydrate(usePlayerStorage);
-    const playerId = usePlayerStorage((s) => s.playerId);
     const [itemName, setItemName] = useState("");
     const [data, setData] = useState<TooltipData | undefined>(undefined);
     const box = usePopoverResizer(ID_POPOVER_EDIT, 200, 1000, 400, 500);
-    const role = usePlayerStorage((s) => s.role);
 
     useEffect(() => {
         let cancelled = false;
@@ -158,169 +115,7 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                         backgroundColor={data.style.backgroundColor}
                         fontFamily={data.text.style.fontFamily}
                     />
-                    <Stack
-                        direction="row"
-                        sx={{ mt: 2 }}
-                        justifyContent="space-between"
-                    >
-                        <Control label="Font">
-                            <Select
-                                size="small"
-                                sx={{
-                                    minWidth: 120,
-                                }}
-                                value={data.text.style.fontFamily}
-                                onChange={(e) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            draft.text.style.fontFamily =
-                                                e.target.value;
-                                        }),
-                                    )
-                                }
-                            >
-                                {...[...OWLBEAR_FONTS.entries()].map(
-                                    ([, [displayName, fontFamily]]) => (
-                                        <MenuItem
-                                            key={fontFamily}
-                                            value={fontFamily}
-                                        >
-                                            <Typography fontFamily={fontFamily}>
-                                                {displayName}
-                                            </Typography>
-                                        </MenuItem>
-                                    ),
-                                )}
-                            </Select>
-                        </Control>
-                        <ColorInput
-                            title="Base"
-                            value={assumeHexColor(data.style.backgroundColor)}
-                            onChange={(color) =>
-                                setData(
-                                    produce(data, (draft) => {
-                                        draft.style.backgroundColor = color;
-                                    }),
-                                )
-                            }
-                        />
-                        <ColorInput
-                            title="Text"
-                            value={assumeHexColor(data.text.style.fillColor)}
-                            onChange={(color) =>
-                                setData(
-                                    produce(data, (draft) => {
-                                        draft.text.style.fillColor = color;
-                                    }),
-                                )
-                            }
-                        />
-                        <Control label="Align Text">
-                            <ToggleButtonGroup
-                                exclusive
-                                size="small"
-                                value={data.text.style.textAlign}
-                                onChange={(
-                                    _e,
-                                    textAlign: TextStyle["textAlign"] | null,
-                                ) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            draft.text.style.textAlign =
-                                                textAlign ?? "CENTER";
-                                        }),
-                                    )
-                                }
-                            >
-                                <ToggleButton title="Left" value="LEFT">
-                                    <FormatAlignLeft />
-                                </ToggleButton>
-                                <ToggleButton title="Center" value="CENTER">
-                                    <FormatAlignCenter />
-                                </ToggleButton>
-                                <ToggleButton title="Right" value="RIGHT">
-                                    <FormatAlignRight />
-                                </ToggleButton>
-                            </ToggleButtonGroup>
-                        </Control>
-                    </Stack>
-                    <Stack
-                        direction="row"
-                        sx={{ mt: 2 }}
-                        justifyContent="space-between"
-                    >
-                        <Control label="Visible To">
-                            <ToggleButtonGroup
-                                exclusive
-                                size="small"
-                                value={data.visibleTo ?? "undefined"}
-                                onChange={(_e, visibleTo: Player["id"]) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            if (visibleTo === "undefined") {
-                                                delete draft.visibleTo;
-                                            } else {
-                                                draft.visibleTo = visibleTo;
-                                            }
-                                        }),
-                                    )
-                                }
-                            >
-                                <ToggleButton
-                                    value="undefined"
-                                    title="Visible to everyone"
-                                >
-                                    <Visibility sx={{ mr: 1 }} />
-                                    All
-                                </ToggleButton>
-                                <ToggleButton
-                                    value={playerId}
-                                    title="Visible to me and and the GM"
-                                >
-                                    <DisabledVisible sx={{ mr: 1 }} />
-                                    Me
-                                </ToggleButton>
-                                <ToggleButton
-                                    value="GM"
-                                    title="Visible to GM only"
-                                    disabled={role !== "GM"}
-                                >
-                                    <GmIcon sx={{ mr: 1 }} />
-                                    GM
-                                </ToggleButton>
-                            </ToggleButtonGroup>
-                        </Control>
-                        <Control label="Width">
-                            <ToggleButtonGroup
-                                exclusive
-                                size="small"
-                                value={data.text.width}
-                                onChange={(
-                                    _e,
-                                    width: TooltipData["text"]["width"] | null,
-                                ) =>
-                                    setData(
-                                        produce(data, (draft) => {
-                                            if (width) {
-                                                draft.text.width = width;
-                                            }
-                                        }),
-                                    )
-                                }
-                            >
-                                <ToggleButton title="Fit to text" value="AUTO">
-                                    {/* <WidthFullOutlined /> */}
-                                    <SettingsOverscan />
-                                </ToggleButton>
-                                <ToggleButton title="Wide" value={1000}>
-                                    <WidthWideOutlined />
-                                </ToggleButton>
-                                <ToggleButton title="Narrow" value={300}>
-                                    <WidthNormalOutlined />
-                                </ToggleButton>
-                            </ToggleButtonGroup>
-                        </Control>
-                    </Stack>
+                    <StyleEditor value={data} onChange={setData} />
                     <Stack
                         direction="row"
                         sx={{ mt: 2 }}
