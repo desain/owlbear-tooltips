@@ -6,11 +6,14 @@ import {
     type Item,
     type Label,
     type Layer,
+    type Player,
     type Vector2,
 } from "@owlbear-rodeo/sdk";
 import {
     containsImplies,
     isObject,
+    isString,
+    isVector2,
     type HasParameterizedMetadata,
 } from "owlbear-utils";
 import { METADATA_KEY_TOOLTIPS } from "../constants";
@@ -19,8 +22,10 @@ import { usePlayerStorage } from "./usePlayerStorage";
 export interface TooltipData extends Pick<Label, "text" | "style"> {
     /**
      * Undefined = visible to all;
+     * "GM" = visible to only GM
+     * id = visible to that ID (and GM)
      */
-    visibleTo?: "GM";
+    visibleTo?: Player["id"];
     /**
      * If present, overrides global offset from anchor point
      */
@@ -34,12 +39,15 @@ function isTooltipData(data: unknown): data is TooltipData {
         isObject(data.text) &&
         "style" in data &&
         isObject(data.style) &&
-        containsImplies(data, "visibleTo", (visibleTo) => visibleTo === "GM")
+        containsImplies(data, "visibleTo", isString) &&
+        containsImplies(data, "offset", isVector2)
     );
 }
 
-export function tooltipVisible(data: TooltipData) {
-    return data.visibleTo !== "GM" || usePlayerStorage.getState().role === "GM";
+export function tooltipVisible({ visibleTo }: TooltipData) {
+    const { role, playerId } = usePlayerStorage.getState();
+    console.log(playerId);
+    return !visibleTo || role === "GM" || playerId === visibleTo;
 }
 
 export function tooltipIsEmpty(data: TooltipData) {

@@ -49,6 +49,7 @@ interface OwlbearStore {
     readonly sceneReady: boolean;
     readonly theme: Theme;
     readonly role: Role;
+    readonly playerId: Player["id"];
     readonly selection: Player["selection"];
     readonly permissions: Permission[];
     readonly grid: GridParsed;
@@ -57,6 +58,7 @@ interface OwlbearStore {
     readonly roomMetadata: RoomMetadata;
     readonly setSceneReady: (this: void, sceneReady: boolean) => void;
     readonly setRole: (this: void, role: Role) => void;
+    readonly setPlayerId: (this: void, playerId: string) => void;
     readonly handleSelectionChange: (
         this: void,
         selection: Player["selection"],
@@ -84,6 +86,7 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
                 sceneReady: false,
                 theme: DEFAULT_THEME,
                 role: "PLAYER",
+                playerId: "NOT_LOADED",
                 selection: [],
                 permissions: [],
                 grid: DEFAULT_GRID,
@@ -94,6 +97,7 @@ export const usePlayerStorage = create<LocalStorage & OwlbearStore>()(
                 },
                 setSceneReady: (sceneReady: boolean) => set({ sceneReady }),
                 setRole: (role: Role) => set({ role }),
+                setPlayerId: (playerId: string) => set({ playerId }),
                 handleSelectionChange: (selection) => {
                     set({
                         selection,

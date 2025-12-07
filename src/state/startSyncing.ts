@@ -14,6 +14,7 @@ export function startSyncing(): [
         setSceneReady,
         handleThemeChange,
         setRole,
+        setPlayerId,
         handleGridChange,
         handleItemsChange,
         handlePermissionsChange,
@@ -27,6 +28,7 @@ export function startSyncing(): [
     });
 
     const roleInitialized = OBR.player.getRole().then(setRole);
+    const playerIdInitialized = OBR.player.getId().then(setPlayerId);
 
     // const playerIdInitialized = OBR.player.getId().then(setPlayerId);
     const selectionInitialized = OBR.player
@@ -34,7 +36,7 @@ export function startSyncing(): [
         .then(handleSelectionChange);
     const unsubscribePlayer = OBR.player.onChange((player) => {
         setRole(player.role);
-        // setPlayerId(player.id);
+        setPlayerId(player.id);
         handleSelectionChange(player.selection);
     });
 
@@ -74,7 +76,7 @@ export function startSyncing(): [
         Promise.all([
             sceneReadyInitialized,
             roleInitialized,
-            // playerIdInitialized,
+            playerIdInitialized,
             selectionInitialized,
             gridInitialized,
             // roomMetadataInitialized,

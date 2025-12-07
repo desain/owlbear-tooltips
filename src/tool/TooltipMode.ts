@@ -75,7 +75,7 @@ const GM_OWNED_INVISIBLE_TOOLTIP: TooltipData = {
                 type: "paragraph",
                 children: [
                     {
-                        text: "(Not visible to players)",
+                        text: "(Only visible to another player)",
                         italic: true,
                     },
                 ],
@@ -108,12 +108,13 @@ const GM_OWNED_INVISIBLE_TOOLTIP: TooltipData = {
 
 /**
  * @param data item tooltip, or undefined if there isn't one
+ * @param ownerId player ID who owns the item the tooltip is on
  * @returns 'click to add' tooltip if there's no tooltip
  * @returns 'gm owned' tooltip if the tooltip is extant but invisible to currentp player
  * @returns tooltip if it's extant and visible, with an extra 'click to edit' line if
  *          the tooltip is editable
  */
-function processTooltip(data?: TooltipData): TooltipData {
+function processTooltip(data: TooltipData | undefined): TooltipData {
     return !data
         ? CLICK_TO_ADD_TOOLTIP
         : !tooltipVisible(data)

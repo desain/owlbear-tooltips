@@ -66,9 +66,13 @@ To make a production build run:
 
 ## To do
 
+-   user settings panel
+    -   shortcut
+    -   tooltip defaults
+-   Material symbols, use h1/h2
+-   Font size?
 -   Per-token icon offsets
     -   Configure per-token icon offsets by dragging icon in tooltip mode
--   "Owner or GM" visibility
 -   Edit icon for expanded tooltip?
 -   Setting to delay before showing?
 -   Set text outline color and width

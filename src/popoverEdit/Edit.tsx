@@ -20,7 +20,11 @@ import {
     ToggleButtonGroup,
     Typography,
 } from "@mui/material";
-import OBR, { type Descendant, type TextStyle } from "@owlbear-rodeo/sdk";
+import OBR, {
+    type Descendant,
+    type Player,
+    type TextStyle,
+} from "@owlbear-rodeo/sdk";
 import { produce } from "immer";
 import {
     assumeHexColor,
@@ -40,6 +44,7 @@ import {
     type TooltipItem,
 } from "../state/TooltipItem";
 import { usePlayerStorage } from "../state/usePlayerStorage";
+import GmIcon from "./GmIcon";
 import { RichTextEditor } from "./RichTextEditor";
 
 const DEFAULT_TOOLTIP: TooltipData = {
@@ -105,6 +110,7 @@ function lowercaseAlign(
 
 export const Edit: React.FC<EditProps> = ({ id }) => {
     useRehydrate(usePlayerStorage);
+    const playerId = usePlayerStorage((s) => s.playerId);
     const [itemName, setItemName] = useState("");
     const [data, setData] = useState<TooltipData | undefined>(undefined);
     const box = usePopoverResizer(ID_POPOVER_EDIT, 200, 1000, 400, 500);
@@ -243,36 +249,43 @@ export const Edit: React.FC<EditProps> = ({ id }) => {
                         sx={{ mt: 2 }}
                         justifyContent="space-between"
                     >
-                        <Control label="Visibility">
+                        <Control label="Visible To">
                             <ToggleButtonGroup
                                 exclusive
                                 size="small"
-                                value={data.visibleTo ?? "ALL"}
-                                onChange={(_e, visibleTo) =>
+                                value={data.visibleTo ?? "undefined"}
+                                onChange={(_e, visibleTo: Player["id"]) =>
                                     setData(
                                         produce(data, (draft) => {
-                                            if (visibleTo === "GM") {
-                                                draft.visibleTo = "GM";
-                                            } else {
+                                            if (visibleTo === "undefined") {
                                                 delete draft.visibleTo;
+                                            } else {
+                                                draft.visibleTo = visibleTo;
                                             }
                                         }),
                                     )
                                 }
                             >
                                 <ToggleButton
-                                    value="ALL"
-                                    title="Visible to Everyone"
+                                    value="undefined"
+                                    title="Visible to everyone"
                                 >
                                     <Visibility sx={{ mr: 1 }} />
                                     All
                                 </ToggleButton>
                                 <ToggleButton
-                                    value="GM"
-                                    title="Visible to GM Only"
-                                    disabled={role !== "GM"}
+                                    value={playerId}
+                                    title="Visible to me and and the GM"
                                 >
                                     <DisabledVisible sx={{ mr: 1 }} />
+                                    Me
+                                </ToggleButton>
+                                <ToggleButton
+                                    value="GM"
+                                    title="Visible to GM only"
+                                    disabled={role !== "GM"}
+                                >
+                                    <GmIcon sx={{ mr: 1 }} />
                                     GM
                                 </ToggleButton>
                             </ToggleButtonGroup>
