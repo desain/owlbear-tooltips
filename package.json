@@ -1,7 +1,7 @@
 {
     "name": "owlbear-tooltips",
     "type": "module",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Add notes to tokens with a new text tool mode. Selected tokens with notes show an info icon; click it to see the tooltip.",
     "scripts": {
         "dev": "vite",
