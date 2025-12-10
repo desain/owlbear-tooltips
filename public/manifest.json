@@ -1,7 +1,7 @@
 {
   "name": "Tooltips",
   "description": "Add notes to tokens with a new text tool mode. Selected tokens with notes show an info icon; click it to see the tooltip.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "manifest_version": 1,
   "author": "desain",
   "icon": "/logo.png",
