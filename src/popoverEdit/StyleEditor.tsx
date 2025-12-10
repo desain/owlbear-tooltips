@@ -52,7 +52,13 @@ export const StyleEditor: React.FC<StyleEditorProps> = ({
 
     return (
         <>
-            <Stack direction="row" justifyContent="space-between" sx={sx}>
+            <Stack
+                direction="row"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                rowGap={1}
+                sx={sx}
+            >
                 <Control label="Font">
                     <Select
                         size="small"
@@ -130,12 +136,6 @@ export const StyleEditor: React.FC<StyleEditorProps> = ({
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Control>
-            </Stack>
-            <Stack
-                direction="row"
-                sx={{ mt: 2 }}
-                justifyContent="space-between"
-            >
                 <Control label="Visible To">
                     <ToggleButtonGroup
                         exclusive
