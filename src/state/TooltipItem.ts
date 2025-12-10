@@ -46,7 +46,6 @@ function isTooltipData(data: unknown): data is TooltipData {
 
 export function tooltipVisible({ visibleTo }: TooltipData) {
     const { role, playerId } = usePlayerStorage.getState();
-    console.log(playerId);
     return !visibleTo || role === "GM" || playerId === visibleTo;
 }
 
@@ -64,7 +63,17 @@ export function tooltipIsEmpty(data: TooltipData) {
 }
 
 export type TooltipItem = Image & {
-    layer: Exclude<Layer, "MAP">;
+    layer: Exclude<
+        Layer,
+        | "MAP"
+        | "GRID"
+        | "RULER"
+        | "FOG"
+        | "POINTER"
+        | "POST_PROCESS"
+        | "CONTROL"
+        | "POPOVER"
+    >;
 } & HasParameterizedMetadata<
         typeof METADATA_KEY_TOOLTIPS,
         TooltipData | undefined
@@ -74,6 +83,13 @@ export function isTooltipItem(item: Item): item is TooltipItem {
     return (
         isImage(item) &&
         item.layer !== "MAP" &&
+        item.layer !== "FOG" &&
+        item.layer !== "GRID" &&
+        item.layer !== "RULER" &&
+        item.layer !== "POINTER" &&
+        item.layer !== "POST_PROCESS" &&
+        item.layer !== "CONTROL" &&
+        item.layer !== "POPOVER" &&
         containsImplies(item.metadata, METADATA_KEY_TOOLTIPS, isTooltipData)
     );
 }

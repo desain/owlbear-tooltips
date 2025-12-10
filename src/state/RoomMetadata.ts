@@ -28,7 +28,6 @@ export function isRoomMetadata(metadata: unknown): metadata is RoomMetadata {
 }
 
 export function setRoomMetadata(roomMetadata: RoomMetadata) {
-    console.log(roomMetadata);
     return OBR.room.setMetadata({
         [METADATA_KEY_ROOM]: roomMetadata,
     });

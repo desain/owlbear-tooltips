@@ -183,6 +183,48 @@ export class TooltipMode implements ToolMode {
                         coordinator: "&&",
                     },
                     {
+                        key: "layer",
+                        operator: "!=",
+                        value: "GRID",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "RULER",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "FOG",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "POINTER",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "POST_PROCESS",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "CONTROL",
+                        coordinator: "&&",
+                    },
+                    {
+                        key: "layer",
+                        operator: "!=",
+                        value: "POPOVER",
+                        coordinator: "&&",
+                    },
+                    {
                         key: "type",
                         operator: "==",
                         value: "IMAGE",

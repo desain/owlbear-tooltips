@@ -30,6 +30,13 @@ While using this mode, click on a token to edit its tooltip. You can configure t
 
 ![Tooltip edit window](https://github.com/user-attachments/assets/7e07bfd8-45f6-4933-ba6f-7afee6bec17b)
 
+Only tokens on non-map selectable layers can have tooltips added. Or, more precisely:
+
+| Tooltip eligibility | Yes                                                     | No                                   |
+| ------------------- | ------------------------------------------------------- | ------------------------------------ |
+| Object type         | Images (eg. tokens)                                     | Drawings, Text, Rulers               |
+| Canvas layer        | Drawing, Prop, Mount, Character, Attachment, Note, Text | Map, any layer not in the layer menu |
+
 Once an item has a tooltip, you can hover over the item using the tooltip mode to preview the tooltip contents.
 
 ![Previewing a tooltip](https://github.com/user-attachments/assets/7d7fb8a5-5451-4477-a833-27b2a43bcbd1)
